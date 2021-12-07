@@ -20,6 +20,9 @@ const Register = () => {
     // console.log('data of user :', data)
       .then((response) => {
         console.log('Data sent successfully.', response)
+        if(response.status === 200) {
+          history.push('/admin')
+        }
         console.log('User registration successful')
       }).catch (err => {console.log(err)})
   }

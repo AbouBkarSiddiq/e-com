@@ -1,59 +1,49 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from '../../redux/actions/adminActions'
-import { deleteUser } from '../../redux/actions/adminActions';
-import Layout from '../layout/Layout';
+import { getAllCategories } from '../../redux/actions/adminActions'
 
-const AllUsers = () => {
 
+const AllCategories = () => {
   const dispatch = useDispatch()
-  const [deleteModal, setDeleteModal] = useState(false)
-  const [userId, setUserId] = useState()
-  let users = useSelector((state) => state.adminReducer.users);
-
+  let categories = useSelector((state) => state.adminReducer.categories);
   useEffect(() => {
-    if (!users?.length) {
-      dispatch(getAllUsers());
+    if (!categories?.length) {
+      dispatch(getAllCategories());
       console.log('Rendering useEffect...')
     }
-    console.log('Data of fetched users:', users)
-  }, [users])
+    console.log('Data of fetched categories:', categories)
+  }, [categories])
 
-  const handleDelete = () => {
-    // setUserId(user._id)
-    dispatch(deleteUser(userId))
-    setDeleteModal(false)
-  }
-
-  return (
-    <div className="px-4 border mx-4" style={{ backgroundColor: 'white' }}>
-      <label className="pl-2 mt-4">Users List</label>
+    return (
+        <div className="px-4 border mx-4" style={{ backgroundColor: 'white' }}>
+      <label className="pl-2 mt-4">Categories List</label>
       <table class="table">
         <thead>
           <tr scope="row">
-            <th scope="col">User Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Image</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         {
-          users.map((user) => (
+          categories.map((category) => (
             <tbody>
               <tr scope="row">
-                <td>{user.userName}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
+                <td>{category.title}</td>
+                <td>{category.description}</td>
+                {/* <td>{category.image? <img src={category.image} style={{width:'100px', height:'100px'}}/> : null}</td> */}
+                <td><img src={category.image} style={{width:'100px', height:'100px'}}/></td>
                 <td>
-                <Link to={`/user/${user._id}`}>
+                <Link to={`/category/${category._id}`}>
                   <button className="btn btn-danger" 
                   style={{ marginRight: '20px' }} 
                   onClick={() => {
-                    setDeleteModal(true)
-                    setUserId(user._id)
+                    // setDeleteModal(true)
+                    // setUserId(user._id)
                   }} 
-                  onClick={handleDelete}
+                //   onClick={handleDelete}
                   data-toggle="modal" 
                   data-target="#exampleModal">Delete</button>
                 </Link>
@@ -64,7 +54,7 @@ const AllUsers = () => {
           ))
         }
       </table>
-      {deleteModal ? <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      {/* {deleteModal ? <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -81,9 +71,9 @@ const AllUsers = () => {
           </div>
         </div>
       </div>
-        : null}
+        : null} */}
     </div>
-  )
+    )
 }
 
-export default AllUsers
+export default AllCategories

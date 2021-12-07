@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ALL_USERS, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, UPDATE_TODO, GET_TODO_DATA_TO_UPDATE } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, UPDATE_TODO, GET_TODO_DATA_TO_UPDATE } from "../constants/index";
 // require('dotenv').config();
 
 // const setIsFetchingTodos = (status) => {
@@ -39,6 +39,36 @@ export const getAllUsers = (userId, token) => async (dispatch) => {
     
 }
 
+export const getAllCategories = (userId, token) => async (dispatch) => {
+    try {
+      // dispatch(setIsFetchingTodos(true)); 
+  
+      // const config = {
+      //     headers: { Authorization: `Bearer ${token}` }
+      // };
+      
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}category/all`)
+      // const res = await axios.get(`${apiUrl}todo`)
+      // const res = await axios.get(`${apiUrl}/todo?userId=${userId}`, config);
+  
+      // dispatch(setIsFetchingTodos(true));
+      if (res.status === 200) {
+          dispatch({
+              type: GET_ALL_CATEGORIES,
+              // isFetching: false,
+              payload: res.data.data,
+          });
+      } else {
+          // dispatch(setIsFetchingTodos(false));
+  
+      }
+        
+    } catch (error) {
+      // dispatch(setIsFetchingTodos(false));
+    }
+      
+  }
+
 export const getTodoDetail = (id) => async (dispatch) => {
     console.log('Id for get todo detail:', id)
     const res = await axios.get(`${process.env.REACT_APP_API_URL}todo/${id}`);
@@ -56,9 +86,8 @@ export const getTodoDetail = (id) => async (dispatch) => {
     }
 }
 
-export const deleteUser = (id, history) => async (dispatch) => {
+export const deleteUser = (id) => async (dispatch) => {
     console.log('Id of user:', id)
-    console.log('History object:', history)
     const res = await axios.delete(`${process.env.REACT_APP_API_URL}user/delete/${id}`);
     console.log('Response from api for user deletion:', res)
     // dispatch(setIsFetchingTodos(true));
@@ -68,7 +97,6 @@ export const deleteUser = (id, history) => async (dispatch) => {
             // isFetching: false,
             payload: res.data.data
         });
-        history.push('/users')
     } else {
     }
 }

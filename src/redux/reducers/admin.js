@@ -1,9 +1,10 @@
-import { GET_ALL_USERS, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_TODO_DATA_TO_UPDATE, UPDATE_TODO } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_TODO_DATA_TO_UPDATE, UPDATE_TODO } from "../constants/index";
 
 const initialState = {
   users: [],
   isFetching: false,
-  user:{}
+  user:{},
+  categories: [],
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -20,6 +21,14 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         users: action.payload,
+      };
+
+      case GET_ALL_CATEGORIES:
+        // console.log('data at reducer:', state)
+        return {
+        ...state,
+        isFetching: false,
+        categories: action.payload,
       };
 
       case GET_TODO_DETAIL:

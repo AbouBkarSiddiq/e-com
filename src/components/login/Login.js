@@ -71,7 +71,7 @@ const Login = () => {
                       </form>
                       <hr />
                       <div className="text-center">
-                        <a onClick={() => history.push('/register')} className="small" style={{ cursor: 'pointer' }}>Create an Account!</a>
+                        {/* <a onClick={() => history.push('/register')} className="small" style={{ cursor: 'pointer' }}>Create an Account!</a> */}
                       </div>
                     </div>
                   </div>
