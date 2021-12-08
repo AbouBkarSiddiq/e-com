@@ -1,10 +1,11 @@
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_TODO_DATA_TO_UPDATE, UPDATE_TODO } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_TODO_DATA_TO_UPDATE, UPDATE_TODO } from "../constants/index";
 
 const initialState = {
   users: [],
   isFetching: false,
   user:{},
   categories: [],
+  category: {},
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -45,11 +46,11 @@ const adminReducer = (state = initialState, action) => {
         isFetching: false,
         user: action.payload,
       };
-      case CREATE_TODO:
+      case ADD_CATEGORY:
         return {
         ...state,
         isFetching: false,
-        todo: action.payload,
+        category: action.payload,
       };
       case GET_TODO_DATA_TO_UPDATE:
         return {

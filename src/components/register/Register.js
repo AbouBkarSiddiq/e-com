@@ -1,12 +1,12 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+// import { useHistory } from 'react-router-dom';
+// import { useDispatch, useSelector } from "react-redux";
 require('dotenv').config();
 
 const Register = () => {
-  const dispatch = useDispatch()
-  let history = useHistory()
+  // const dispatch = useDispatch()
+  // let history = useHistory()
 
   const [userName, setUserName] = useState()
   const [email, setEmail] = useState()
@@ -16,15 +16,13 @@ const Register = () => {
     e.preventDefault()
     let data = { userName, email, role }
     console.log('Data of user at Register...>>>>', data)
-    axios.post(`${process.env.REACT_APP_API_URL}user/new`, data)
-    // console.log('data of user :', data)
+    axios.post(`${process.env.REACT_APP_API_URL}user/register`, data)
       .then((response) => {
         console.log('Data sent successfully.', response)
-        if(response.status === 200) {
-          history.push('/admin')
-        }
-        console.log('User registration successful')
       }).catch (err => {console.log(err)})
+      setUserName('')
+      setEmail('')
+      setRole([])
   }
 
   return (

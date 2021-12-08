@@ -216,6 +216,14 @@ const Layout = (props) => {
               }
               }>List Users</span>
             </Link>
+            <Link to={`/add-category`} style={{ cursor: 'pointer' }} className="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+              <i className="fas fa-fw fa-user" />
+              <span onClick={(e) => {
+                // setAllUsers(true)
+                // setShowForm(false)
+              }
+              }>Add Category</span>
+            </Link>
             <Link to={`/all-categories`} style={{ cursor: 'pointer' }} className="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
               <i className="fas fa-fw fa-user" />
               <span onClick={(e) => {

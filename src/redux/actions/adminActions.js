@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, UPDATE_TODO, GET_TODO_DATA_TO_UPDATE } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, UPDATE_TODO, GET_TODO_DATA_TO_UPDATE } from "../constants/index";
 // require('dotenv').config();
 
 // const setIsFetchingTodos = (status) => {
@@ -17,7 +17,7 @@ export const getAllUsers = (userId, token) => async (dispatch) => {
     //     headers: { Authorization: `Bearer ${token}` }
     // };
     
-    const res = await axios.get(`${process.env.REACT_APP_API_URL}user/all`)
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}user`)
     // const res = await axios.get(`${apiUrl}todo`)
     // const res = await axios.get(`${apiUrl}/todo?userId=${userId}`, config);
 
@@ -47,7 +47,7 @@ export const getAllCategories = (userId, token) => async (dispatch) => {
       //     headers: { Authorization: `Bearer ${token}` }
       // };
       
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}category/all`)
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}category`)
       // const res = await axios.get(`${apiUrl}todo`)
       // const res = await axios.get(`${apiUrl}/todo?userId=${userId}`, config);
   
@@ -87,8 +87,25 @@ export const getTodoDetail = (id) => async (dispatch) => {
 }
 
 export const deleteUser = (id) => async (dispatch) => {
+    // console.log('history prop:', history);
     console.log('Id of user:', id)
-    const res = await axios.delete(`${process.env.REACT_APP_API_URL}user/delete/${id}`);
+    const res = await axios.delete(`${process.env.REACT_APP_API_URL}user/${id}`);
+    console.log('Response from api for user deletion:', res)
+    // dispatch(setIsFetchingTodos(true));
+    if (res.status === 200) {
+        dispatch({
+            type: DELETE_USER,
+            // isFetching: false,
+            payload: res.data.data
+        });
+        // history.push('/admin')
+    } else {
+    }
+}
+
+export const deleteCategory = (id) => async (dispatch) => {
+    console.log('Id of category:', id)
+    const res = await axios.delete(`${process.env.REACT_APP_API_URL}category/${id}`);
     console.log('Response from api for user deletion:', res)
     // dispatch(setIsFetchingTodos(true));
     if (res.status === 200) {
@@ -101,22 +118,22 @@ export const deleteUser = (id) => async (dispatch) => {
     }
 }
 
-export const createTodo = (formData, ownProps) => async (dispatch) => {
-    console.log('Own Props:', ownProps);
+export const addCategory = (formData) => async (dispatch) => {
+    for (var pair of formData.entries()) {
+        console.log('Log for form Data at actions:', pair[0]+ ' - ' + pair[1]); 
+    }
     const headers = {
         'Content-Type': 'multipart/form-data'
-      }
-    const res = await axios.post(`${process.env.REACT_APP_API_URL}todo/`, formData, {headers});
-    console.log('Response from api for newly created todo:', res.data.data)
+    }
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}category`, formData, {headers});
+    console.log('Response from api for newly created categroy:', res)
 
     if (res.status === 200) {
         dispatch({
-            type: CREATE_TODO,
+            type: ADD_CATEGORY,
             // isFetching: false,
             payload: res.data.data,
-            // ownProps.push('/')
         });
-        ownProps.history.push('/home')
     } else {
     }
 }

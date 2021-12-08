@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 import Admin from '../components/admin/Admin';
+import AddCategory from '../components/category/AddCategory';
 import AllCategories from '../components/category/AllCategories';
 import Layout from '../components/layout/Layout';
 import Login from '../components/login/Login';
@@ -27,7 +28,8 @@ const Routing = () => {
                 <PrivateRoute path="/admin" component={Admin} />
                 <PrivateRoute path="/all-users" component={AllUsers} />
                 <PrivateRoute path="/add-user" component={Register} />
-                <PrivateRoute path="/user/:id" component={AllUsers} />
+                {/* <PrivateRoute path="/user/:id" component={AllUsers} /> */}
+                <PrivateRoute path="/add-category" component={AddCategory} />
                 <PrivateRoute path="/all-categories" component={AllCategories} />
                 {/* 
                 <Route path="/create" component={Create} />
