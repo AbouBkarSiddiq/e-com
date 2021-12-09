@@ -232,6 +232,22 @@ const Layout = (props) => {
               }
               }>List Categories</span>
             </Link>
+            <Link to={`/add-product`} style={{ cursor: 'pointer' }} className="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+              <i className="fas fa-fw fa-user" />
+              <span onClick={(e) => {
+                // setAllUsers(true)
+                // setShowForm(false)
+              }
+              }>Add Product</span>
+            </Link>
+            <Link to={`/all-products`} style={{ cursor: 'pointer' }} className="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+              <i className="fas fa-fw fa-user" />
+              <span onClick={(e) => {
+                // setAllUsers(true)
+                // setShowForm(false)
+              }
+              }>List Products</span>
+            </Link>
           </li>
           {/* Divider */}
           <hr className="sidebar-divider d-none d-md-block" />

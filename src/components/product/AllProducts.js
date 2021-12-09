@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCategories } from '../../redux/actions/adminActions'
-import { deleteCategory } from '../../redux/actions/adminActions'
+import { getAllProducts } from '../../redux/actions/adminActions'
+import { deleteProduct} from '../../redux/actions/adminActions'
 
 
-const AllCategories = () => {
+const AllProducts = () => {
   const dispatch = useDispatch()
   let history = useHistory()
-  const [categoryId, setCategoryId] = useState()
+  const [productId, setProductId] = useState()
   const [deleteModal, setDeleteModal] = useState(false)
-  let categories = useSelector((state) => state.adminReducer.categories);
+  let products = useSelector((state) => state.adminReducer.products);
+
+  console.log('Products response from backend>>>>', products)
 
   useEffect(() => {
-    if(!categories.length) {
-      dispatch(getAllCategories());
+    if(!products.length) {
+      dispatch(getAllProducts());
       console.log('Rendering useEffect...')
-      console.log('Data of fetched categories:', categories)
+      console.log('Data of fetched categories:', products)
 
     }
-  },[categories])
+  },[products])
 
   const handleEdit = () => {
     history.push('category')
@@ -30,42 +32,50 @@ const AllCategories = () => {
 
   const handleDelete = () => {
     // setUserId(user._id)
-    dispatch(deleteCategory(categoryId))
+    dispatch(deleteProduct(productId))
     setDeleteModal(false)
   }
 
    return (
-        <div className="px-4 border mx-4" style={{ backgroundColor: 'white' }}>
-      <label className="pl-2 mt-4">Categories List</label>
+    <div className="px-4 border mx-4" style={{ backgroundColor: 'white' }}>
+      <h5 className="pl-2 mt-4 font-weight-bold">Products List</h5>
       <table class="table">
         <thead>
           <tr scope="row">
             <th scope="col">Title</th>
+            <th scope="col">Price</th>
             <th scope="col">Description</th>
             <th scope="col">Image</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         {
-          categories.map((category) => (
+          products.map((product) => (
             <tbody>
               <tr scope="row">
-                <td>{category.title}</td>
-                <td>{category.description}</td>
+                <td>{product.title}</td>
+                <td>{product.price}</td>
+                <td>{product.description}</td>
                 {/* <td>{category.image? <img src={category.image} style={{width:'100px', height:'100px'}}/> : null}</td> */}
-                <td><img src={category.image} style={{width:'100px', height:'100px'}}/></td>
+                <td>{<img src={product?.image} style={{width:'100px', height:'100px'}}/>}</td>
+                {/* {
+                  product.image?.map(ele => {
+                    console.log(ele[0])
+                    // <td><img src={ele} style={{width:'10px', height:'10px'}} /></td>
+                  })
+                } */}
                 <td>
-                <Link to={`/all-categories`}>
+                <Link to={`/all-products`}>
                   <button className="btn btn-danger" 
                   style={{ marginRight: '20px' }} 
                   onClick={() => {
                     setDeleteModal(true)
-                    setCategoryId(category._id)
+                    setProductId(product._id)
                   }}
                   data-toggle="modal" 
                   data-target="#exampleModal">Delete</button>
                 </Link>
-                <Link to={`category/${category._id}`}>
+                <Link to={`product/${product._id}`}>
                   <button className="btn btn-primary px-4" onClick={handleEdit}>Edit</button>
                 </Link>
                 </td>
@@ -96,4 +106,4 @@ const AllCategories = () => {
     )
 }
 
-export default AllCategories
+export default AllProducts

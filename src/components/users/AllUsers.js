@@ -14,10 +14,11 @@ const AllUsers = () => {
   let users = useSelector((state) => state.adminReducer.users);
 
   useEffect(() => {
-    if (!users?.length) {
+    if(!users.length){
       dispatch(getAllUsers());
       console.log('Rendering useEffect...')
     }
+      
     // console.log('Data of fetched users:', users)
   }, [users])
 

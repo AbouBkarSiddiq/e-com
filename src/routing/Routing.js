@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-do
 import Admin from '../components/admin/Admin';
 import AddCategory from '../components/category/AddCategory';
 import AllCategories from '../components/category/AllCategories';
+import EditCategory from '../components/category/EditCategory';
+import AllProducts from '../components/product/AllProducts';
+import AddProduct from '../components/product/AddProduct';
 import Layout from '../components/layout/Layout';
 import Login from '../components/login/Login';
 import Register from '../components/register/Register'
@@ -30,7 +33,10 @@ const Routing = () => {
                 <PrivateRoute path="/add-user" component={Register} />
                 {/* <PrivateRoute path="/user/:id" component={AllUsers} /> */}
                 <PrivateRoute path="/add-category" component={AddCategory} />
+                <PrivateRoute path="/category/:id" component={EditCategory} />
+                <PrivateRoute path="/add-product" component={AddProduct} />
                 <PrivateRoute path="/all-categories" component={AllCategories} />
+                <PrivateRoute path="/all-products" component={AllProducts} />
                 {/* 
                 <Route path="/create" component={Create} />
                 <Route path="/todo/:id" component={TodoDetails} />

@@ -1,11 +1,13 @@
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_TODO_DATA_TO_UPDATE, UPDATE_TODO } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_CATEGORY_DATA_TO_UPDATE, UPDATE_CATEGORY } from "../constants/index";
 
 const initialState = {
-  users: [],
   isFetching: false,
+  users: [],
   user:{},
   categories: [],
   category: {},
+  products: [],
+  product: {},
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -31,6 +33,13 @@ const adminReducer = (state = initialState, action) => {
         isFetching: false,
         categories: action.payload,
       };
+      case GET_ALL_PRODUCTS:
+        // console.log('data at reducer:', state)
+        return {
+        ...state,
+        isFetching: false,
+        products: action.payload,
+      };
 
       case GET_TODO_DETAIL:
         console.log('data at reducer:', action.payload)
@@ -52,17 +61,23 @@ const adminReducer = (state = initialState, action) => {
         isFetching: false,
         category: action.payload,
       };
-      case GET_TODO_DATA_TO_UPDATE:
+      case ADD_PRODUCT:
         return {
         ...state,
         isFetching: false,
-        todo: action.payload,
+        product: action.payload,
       };
-      case UPDATE_TODO:
+      case GET_CATEGORY_DATA_TO_UPDATE:
         return {
         ...state,
         isFetching: false,
-        todo: action.payload,
+        category: action.payload,
+      };
+      case UPDATE_CATEGORY:
+        return {
+        ...state,
+        isFetching: false,
+        category: action.payload,
       };
     default:
       return state;
