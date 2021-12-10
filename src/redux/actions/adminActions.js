@@ -146,8 +146,8 @@ export const addProduct = (formData) => async (dispatch) => {
     const headers = {
         'Content-Type': 'multipart/form-data'
     }
-    // const res = await axios.post('http://192.168.100.44:3002/product', formData, {headers});
 
+    // const res = await axios.post('http://192.168.100.44:3002/product', formData, {headers});
     const res = await axios.post(`${process.env.REACT_APP_API_URL}product`, formData, {headers});
     console.log('Response from api for newly created product:', res)
 

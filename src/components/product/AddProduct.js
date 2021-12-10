@@ -4,54 +4,73 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from '../../redux/actions/adminActions';
 
 const AddProduct = () => {
-    const dispatch = useDispatch()
-    const [title, setTitle] = useState('')
-    const [price, setPrice] = useState('')
-    const [description, setDescription] = useState('')
-    const [image, setImage] = useState([])
-    const [preview, setPreview] = useState('')
-    const res = useSelector((state) => state.adminReducer.product);
-    // console.log('res from product action:', res)
+  const dispatch = useDispatch()
+  const [title, setTitle] = useState('')
+  const [price, setPrice] = useState('')
+  const [description, setDescription] = useState('')
+  const [image, setImage] = useState([{}])
+  const [preview, setPreview] = useState('')
+  const res = useSelector((state) => state.adminReducer.product);
+  // console.log('res from product action:', res)
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('price', price);
-        formData.append('description', description);
-        formData.append('image', image);
-        dispatch(addProduct(formData))
-        for (var pair of formData.entries()) {
-            console.log(pair[0]+ ' - ' + pair[1]); 
-        }
-        setTitle('')
-        setImage(null)
-        setPrice('')
-        setDescription('')
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('image', image);
+    dispatch(addProduct(formData))
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ' - ' + pair[1]);
     }
+    setTitle('')
+    setImage(null)
+    setPrice('')
+    setDescription('')
+  }
 
-    // const addMore = () => {
-    //   const add = {
-    //       image: '',
-    //       color: '',
-    //       serialnumber: ''
-    //   }
-    //   this.setState({
-    //       variety: [...this.state.variety, add]
-    //   })
-    // }
+  // const addMore = () => {
+  //   const add = {
+  //       image: '',
+  //       color: '',
+  //       serialnumber: ''
+  //   }
+  //   this.setState({
+  //       variety: [...this.state.variety, add]
+  //   })
+  // }
 
-    const handleFileChange = (e) => {
-        let files = e.target.files
-        if (files) {
-            console.log('Image at create:', files)
-            setImage(...image, [...e.target.files])
-            // setPreview(URL.createObjectURL(e.target.files[0]))
-        }
+  const addImage = () => {
+    console.log('This function works')
+    setImage([...image, {}])
+  }
+  // const handleInputChange = (e, index) => {
+  //   const { name, value } = e.target;
+  //   const list = [...inputList];
+  //   list[index][name] = value;
+  //   setInputList(list);
+  // };
+
+  // onColorChange = (key, event) => {
+  //   const colors = [...this.state.colors]
+  //   colors[key] = event.target.value
+  //   this.setState({
+  //       colors: colors
+  //   })
+  // }
+   
+  const handleFileChange = (key, event) => {
+    const files = [...image]
+    files[key] = event.target.files[0]
+    if (files) {
+      console.log('List of images:', files) 
+      setImage(files)
     }
+  }
 
 
-    return (
+  return (
     <div className="px-4 border mx-4" style={{ backgroundColor: 'white' }}>
       <label className="pl-2 mt-4">Add Product</label>
       <hr />
@@ -95,7 +114,20 @@ const AddProduct = () => {
             onChange={e => setDescription(e.target.value)}
           />
         </div>
-        <div class="form-group">
+        {image?.length ? image.map((el, index) => <div className="form-group small-section upload-file" style={{ border: '1px solid', widht: '100%', height: '20%', background: '#C4E5F9', borderRadius: '10px', outline: 'none', borderColor: 'white', }} >
+          <input
+            type="file"
+            name={`image`}
+            // value={el}
+            accept="image/x-png,image/jpg,image/jpeg, image/png,"
+            onChange={(event) => handleFileChange(index, event)}
+            className="form-control"
+            placeholder="Upload Image"
+          />
+        </div>) : null}
+        <span onClick={addImage} className="btn btn-primary add-more-btn" style={{cursor: 'pointer', marginBottom: '100px' }}>Add more +</span>
+        
+        {/* <div class="form-group">
         <input
             type="file"
             multiple
@@ -105,20 +137,15 @@ const AddProduct = () => {
 
         />
         
+        </div> */}
         {/* <button className="btn btn-primary" onClick={addMore}>Add more+</button> */}
-        </div>
-        {/* {
-            image ? <div>
-                <img style={{ width: '300px', height: '300px' }} src={preview} alt="category" />
-            </div> : null
-        } */}
 
-        <button type="submit" className="btn btn-primary" style={{ marginTop: '12px' }}>
+        <button type="submit" className="btn btn-primary" style={{ marginLeft: '270px', marginTop: '50px'}}>
           Add Product
         </button>
       </form>
     </div>
-    )
+  )
 }
 
 export default AddProduct
