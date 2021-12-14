@@ -6,6 +6,7 @@ import AllCategories from '../components/category/AllCategories';
 import EditCategory from '../components/category/EditCategory';
 import AllProducts from '../components/product/AllProducts';
 import AddProduct from '../components/product/AddProduct';
+import EditProduct from '../components/product/EditProduct'
 import Layout from '../components/layout/Layout';
 import Login from '../components/login/Login';
 import Register from '../components/register/Register'
@@ -26,8 +27,8 @@ const Routing = () => {
     return (
         <Router>
             <Switch>
-                <Layout >
                 <Route exact path="/" component={Login} />
+                <Layout >
                 <PrivateRoute path="/admin" component={Admin} />
                 <PrivateRoute path="/all-users" component={AllUsers} />
                 <PrivateRoute path="/add-user" component={Register} />
@@ -37,6 +38,8 @@ const Routing = () => {
                 <PrivateRoute path="/add-product" component={AddProduct} />
                 <PrivateRoute path="/all-categories" component={AllCategories} />
                 <PrivateRoute path="/all-products" component={AllProducts} />
+                <PrivateRoute path="/product/:id" component={EditProduct} />
+
                 {/* 
                 <Route path="/create" component={Create} />
                 <Route path="/todo/:id" component={TodoDetails} />

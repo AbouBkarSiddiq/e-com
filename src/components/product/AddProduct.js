@@ -19,7 +19,10 @@ const AddProduct = () => {
     formData.append('title', title);
     formData.append('price', price);
     formData.append('description', description);
-    formData.append('image', image);
+    for (let i = 0 ; i < image.length ; i++) {
+      formData.append("image", image[i]);
+    }
+    // formData.append('image', image);
     dispatch(addProduct(formData))
     for (var pair of formData.entries()) {
       console.log(pair[0] + ' - ' + pair[1]);

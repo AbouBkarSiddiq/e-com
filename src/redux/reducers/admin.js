@@ -1,23 +1,22 @@
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_CATEGORY_DATA_TO_UPDATE, UPDATE_CATEGORY } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_CATEGORY, UPDATE_PRODUCT, SET_IS_FETCHING } from "../constants/index";
 
 const initialState = {
-  isFetching: false,
   users: [],
   user:{},
   categories: [],
   category: {},
   products: [],
   product: {},
+  isFetching: false,
 };
 
 const adminReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case SET_IS_FETCHING_TODOS:
-    //   return {
-    //     ...state,
-    //     isFetching: action.payload,
-    //   };
-      
+    case SET_IS_FETCHING:
+      return {
+        ...state,
+        isFetching: action.payload,
+      };
       case GET_ALL_USERS:
         // console.log('data at reducer:', state)
         return {
@@ -40,7 +39,18 @@ const adminReducer = (state = initialState, action) => {
         isFetching: false,
         products: action.payload,
       };
-
+      case GET_PRODUCT_DATA_TO_UPDATE:
+        return {
+        ...state,
+        isFetching: false,
+        product: action.payload,
+      };
+      case UPDATE_PRODUCT:
+        return {
+        ...state,
+        isFetching: false,
+        product: action.payload,
+      };
       case GET_TODO_DETAIL:
         console.log('data at reducer:', action.payload)
         return {

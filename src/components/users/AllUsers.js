@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from '../../redux/actions/adminActions'
 import { deleteUser } from '../../redux/actions/adminActions';
+import Loader from 'react-loader-spinner';
 import Layout from '../layout/Layout';
 
 const AllUsers = () => {
@@ -12,13 +13,13 @@ const AllUsers = () => {
   const [userId, setUserId] = useState()
   // const [users, setUsers] = useState()
   let users = useSelector((state) => state.adminReducer.users);
+  const isFetching = useSelector((state) => state.adminReducer.isFetching)
 
   useEffect(() => {
-    if(!users.length){
+    if(!users.length && !isFetching) {
       dispatch(getAllUsers());
       console.log('Rendering useEffect...')
     }
-      
     // console.log('Data of fetched users:', users)
   }, [users])
 
@@ -28,44 +29,51 @@ const AllUsers = () => {
   }
 
   return (
-    <div className="px-4 border mx-4" style={{ backgroundColor: 'white' }}>
-      <label className="pl-2 mt-4">Users List</label>
-      <table class="table">
-        <thead>
-          <tr scope="row">
-            <th scope="col">User Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        {
-          users.map((user) => (
-            <tbody>
-              <tr scope="row">
-                <td>{user.userName}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>
-                <Link to={`/all-users`}>
-                  <button className="btn btn-danger" 
-                  style={{ marginRight: '20px' }} 
-                  onClick={() => {
-                    setDeleteModal(true)
-                    setUserId(user._id)
-                  }} 
-                  // onClick={handleDelete}
-                  data-toggle="modal" 
-                  data-bs-dismiss="modal"
-                  data-target="#exampleModal">Delete</button>
-                </Link>
-                  <button className="btn btn-primary px-4">Edit</button>
-                </td>
-              </tr>
-            </tbody>
-          ))
-        }
-      </table>
+    <div>
+    {isFetching? (<div className="d-flex justify-content-center align-items-center">
+        <Loader type="ThreeDots" color="#00BFFF" height={80} width={80}/>
+        </div>
+    ) : (<div className="px-4 border mx-4" style={{ backgroundColor: 'white' }}>
+    <label className="pl-2 mt-4">Users List</label>
+    <table class="table">
+      <thead>
+        <tr scope="row">
+          <th scope="col">User Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      {users?.length &&
+        users.map((user) => (
+          <tbody>
+            <tr scope="row">
+              <td>{user.userName}</td>
+              <td>{user.email}</td>
+              <td>{user.role}</td>
+              <td>
+              <Link to={`/all-users`}>
+                <button className="btn btn-danger" 
+                style={{ marginRight: '20px' }} 
+                onClick={() => {
+                  setDeleteModal(true)
+                  setUserId(user._id)
+                }} 
+                // onClick={handleDelete}
+                data-toggle="modal" 
+                data-bs-dismiss="modal"
+                data-target="#exampleModal">Delete</button>
+              </Link>
+                <button className="btn btn-primary px-4">Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        ))
+      }
+    </table>
+    </div>
+    )}
+    
       {deleteModal ? <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
