@@ -125,8 +125,8 @@ export const addCategory = (formData) => async (dispatch) => {
     const headers = {
         'Content-Type': 'multipart/form-data'
     }
-    const res = await axios.post(`http://192.168.100.44:3002/category`, formData, { headers });
-    // const res = await axios.post(`${process.env.REACT_APP_API_URL}category`, formData, { headers });
+    // const res = await axios.post(`http://192.168.100.44:3002/category`, formData, { headers });
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}category`, formData, { headers });
     console.log('Response from api for newly created categroy:', res)
 
     if (res.status === 200) {
@@ -273,6 +273,7 @@ export const updateProduct = (id, formData) => async (dispatch) => {
         const headers = {
             'Content-Type': 'multipart/form-data'
         }
+        // const res = await axios.put(`http://192.168.100.44:3002/product${id}`, formData, {headers});
         const res = await axios.put(`${process.env.REACT_APP_API_URL}product/${id}`, formData, { headers });
         // dispatch(setIsFetchingTodos(true));
         if (res.status === 200) {

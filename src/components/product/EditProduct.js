@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateProduct } from '../../redux/actions/adminActions';
 import { getProductDataToUpdate } from '../../redux/actions/adminActions'
 import Loader from 'react-loader-spinner';
+import { FaTrashAlt } from 'react-icons/fa';
 
 const EditProduct = () => {
   const history = useHistory()
@@ -11,12 +12,12 @@ const EditProduct = () => {
   const dispatch = useDispatch()
   const [product, setProduct] = useState({})
   const [image, setImage] = useState([{}])
-  // const [preview, setPreview] = useState([])
+  const [allImages, setAllImages] = useState([{}])
+  const [selectedImages, setSelectedImages] = useState([])
   const productData = useSelector((state) => state.adminReducer.product);
   const isFetching = useSelector((state) => state.adminReducer.isFetching)
 
-  console.log('res from product action:', productData)
-
+  // console.log('res from product action:', productData)
   const handleChange = ({ target }) => {
     console.log('Target:', target)
     const { name, value } = target;
@@ -25,26 +26,28 @@ const EditProduct = () => {
     });
   };
 
-  // const handleFileChange = (e) => {
-  //   let files = e.target.files[0]
-  //   if (files) {
-  //     console.log('Files', files)
-  //     // setImage(files)
-  //     // console.log("Try to update image::::", setImage(files))
-  //     setProduct({
-  //       ...product, image: files,
-  //     });
-  // setPreview(URL.createObjectURL(e.target.files[0]))
-  //   }
-  // };
 
   const handleFileChange = (key, event) => {
     const files = [...image]
     files[key] = event.target.files[0]
     if (files) {
-      console.log('List of images:', files)
       setImage(files)
-      setImage(image)
+      // console.log('Product dot image:', ...product.image)
+      // console.log('image files spread:', ...image)
+      setAllImages([...(product.image), ...files])
+      console.log('All images combined:', [...(product.image), ...files])
+
+      const fileArray = Array.from(files).map(file => URL.createObjectURL(file))
+      // console.log('File arry of new images:', fileArray)
+      setSelectedImages(fileArray)
+      Array.from(event.target.files[0]).map(file => URL.revokeObjectURL(file))
+      // const mappedFiles = files.map((file) => ({
+      //   ...file,
+      //   preview: URL.createObjectURL(file),
+      // }));
+      // setPreview(mappedFiles);
+      // setImage(URL.createObjectURL(files))
+      // setAllImages(Object.assign(product.image, ...files));
     }
   }
 
@@ -59,13 +62,20 @@ const EditProduct = () => {
     formData.append('title', product.title);
     formData.append('price', product.price)
     formData.append('description', product.description);
-    formData.append('image', product.image);
+    // formData.append('image', product.image);
+    for (let i = 0; i < allImages.length; i++) {
+      formData.append("image", allImages[i]);
+    }
     dispatch(updateProduct(id, formData))
     for (var pair of formData.entries()) {
       console.log(pair[0] + ' - ' + pair[1]);
     }
     setProduct({})
   }
+
+  useEffect(() => {
+    setSelectedImages(selectedImages)
+  }, [selectedImages])
 
   useEffect(() => {
     setProduct(productData)
@@ -77,6 +87,39 @@ const EditProduct = () => {
       dispatch(getProductDataToUpdate(id))
     }
   }, [])
+
+  const handleDeleteImage = (index, e) => {
+    console.log('Index of clicked image:', index)
+    let file = image.splice(index, 1)
+    // const newImages = allImages.filter((ele => ele.index !== index))
+    setAllImages(file)
+    // console.log(setAllImages(newImages))
+    // console.log('New Images:', newImages)
+    console.log('This function is binded.')
+  }
+
+  const handleDeleteImageArray = (index, e, productArray) => {
+    console.log('Product Array:', productArray)
+    console.log('Index of clicked image:', index)
+    // const newArray = productArray.filter((ele => ele.index !== index))
+    // console.log('New Array:', newArray)
+    productArray.splice(index, 1);
+    setImage(productArray)
+    console.log(setAllImages(productArray));
+    console.log('This function is works.')
+  }
+
+  const renderPhotos = (source) => {
+    return source.map((photo, index) => {
+      return (<span className="mx-2 my-2" key={index}>
+        <div>
+          <FaTrashAlt onClick={(e) => handleDeleteImage(index, e)} className="absolute float-right" style={{cursor: 'pointer'}}/>
+        </div>
+        <img src={photo} key={photo} style={{ width: '200px', height: '200px' }} className="relative" />
+      </span>
+      )
+    })
+  }
 
   return (
     <div>
@@ -138,31 +181,20 @@ const EditProduct = () => {
           </div>) : null}
           <span onClick={addImage} className="btn btn-primary add-more-btn" style={{ cursor: 'pointer', marginBottom: '100px' }}>Add more +</span>
 
-          <div className="d-flex col-lg-12">
+          <div className="d-flex col-lg-12 flex-wrap justify-content-">
             {
-              productData?.image?.map(ele => <div className="mx-2"><img style={{ width: '300px', height: '300px' }} src={ele} alt="" /></div>)
+              product?.image?.map((ele, index) =>
+                <span className="mx-2" key={index}>
+                  <div>
+                    <FaTrashAlt onClick={(e) => handleDeleteImageArray(index, e, product.image)} className="absolute float-right" style={{ cursor: 'pointer' }} />
+                  </div>
+                  <img style={{ width: '200px', height: '200px' }} src={ele} alt="" className="relative" />
+                </span>)
+            }
+            {
+              renderPhotos(selectedImages)
             }
           </div>
-          <div>
-            {
-              image?.map(item => <div className="mx-2"><img style={{ width: '300px', height: '300px' }} src={item} alt="" /></div>)
-            }
-          </div>
-          {/* <div>
-          {
-            image ? <img style={{ width: '300px', height: '300px' }} src={image} alt="" /> : null
-          }
-          </div> */}
-
-
-          {/* {
-          preview ? <div>
-              <img style={{ width: '300px', height: '300px' }} src={preview} alt="todo" />
-                  </div> : !preview ? <div>
-              <img style={{ width: '300px', height: '300px' }} src={product.image} alt="todo" />
-          </div> : null
-          } */}
-          
           <button type="submit" className="btn btn-primary" style={{ marginTop: '12px' }}>
             Update Product
           </button>
