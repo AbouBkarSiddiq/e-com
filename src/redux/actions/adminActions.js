@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, DELETE_CATEGORY, DELETE_PRODUCT, CREATE_TODO, UPDATE_CATEGORY, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_PRODUCT, SET_IS_FETCHING } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, DELETE_CATEGORY, DELETE_PRODUCT, UPDATE_CATEGORY, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_PRODUCT, SET_IS_FETCHING } from "../constants/index";
 // require('dotenv').config();
 
 const setIsFetching = (status) => {
@@ -159,7 +159,7 @@ export const getCategoryDataToUpdate = (id) => async (dispatch) => {
 }
 
 export const updateCategory = (id, formData) => async (dispatch) => {
-    // console.log('Own props of updateTodo:', ownProps);
+    try {// console.log('Own props of updateTodo:', ownProps);
     const headers = {
         'Content-Type': 'multipart/form-data'
     }
@@ -174,6 +174,10 @@ export const updateCategory = (id, formData) => async (dispatch) => {
         // history.push('/categories')
         // ownProps.history.push('/home')
     } else {
+        dispatch(setIsFetching(false));
+    } }
+    catch (error) {
+        // dispatch(setIsFetchingTodos(false));
     }
 }
 
@@ -262,11 +266,10 @@ export const getProductDataToUpdate = (id) => async (dispatch) => {
     } catch (error) {
         // dispatch(setIsFetchingTodos(false));
     }
-
-
 }
 
-export const updateProduct = (id, formData) => async (dispatch) => {
+export const updateProduct = (id, formData, history) => async (dispatch) => {
+    console.log('History prop:', history);
     try {
         dispatch(setIsFetching(true));
 
@@ -282,13 +285,14 @@ export const updateProduct = (id, formData) => async (dispatch) => {
                 isFetching: false,
                 payload: res.data.data
             });
-            // history.push('/categories')
+            history.push('/all-products')
             // ownProps.history.push('/home')
         } else {
+            dispatch(setIsFetching(false));
         }
 
     } catch (error) {
-        // dispatch(setIsFetchingTodos(false));
+        dispatch(setIsFetching(false));
     }
 
 }
