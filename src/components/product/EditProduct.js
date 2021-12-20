@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct } from '../../redux/actions/adminActions';
-import { getProductDataToUpdate } from '../../redux/actions/adminActions'
+import { getProductDataToUpdate } from '../../redux/actions/adminActions';
 import Loader from 'react-loader-spinner';
 import { FaTrashAlt } from 'react-icons/fa';
 
@@ -25,7 +25,7 @@ const EditProduct = () => {
       ...product, [name]: value,
     });
   };
-
+  
   const handleFileChange = (key, event) => {
     const files = [...image]
     files[key] = event.target.files[0]
@@ -64,7 +64,6 @@ const EditProduct = () => {
     setProduct(productData)
     console.log('Product object consoled:', productData.image)
     setProductImage(productData.image)
-
   }, [productData])
 
   useEffect(() => {
@@ -74,26 +73,31 @@ const EditProduct = () => {
     }
   }, [])
 
-  const handleDeleteImage = (index, e, sourceArray) => {
-    console.log('Index of clicked image:', index)
+  const handleDeleteImage = (index) => {
+    console.log('Image array:', image)
+    // console.log('Index of clicked image:', index)
     const newSourceArray = [...image]
     console.log('SourceArray data array:', newSourceArray)
     newSourceArray.splice(index, 1)
     setImage(newSourceArray)
-    setSelectedImages(newSourceArray)
-    // setAllImages(newSourceArray)
+    console.log('New source array:', newSourceArray)
+    setAllImages([...productImage, ...newSourceArray])
+    // setSelectedImages(newSourceArray)
+    // console.log(setSelectedImages(newSourceArray))
     console.log('image array passed to setAllImages', newSourceArray)
-    // console.log('This function is binded.')
+    console.log('Product Image array:', productImage)
+    // console.log('Array of image:', image)
   }
 
-  const handleDeleteImageArray = (index, e, productArray) => {
-    console.log('Index of clicked image:', index)
+  const handleDeleteImageArray = (index) => {
+    // console.log('Index of clicked image:', index)
     const newArray = [...productImage]
     newArray.splice(index, 1);
     setProductImage(newArray)
-    setAllImages(newArray)
+    setAllImages([...image, ...newArray])
     console.log('Product Array:', newArray)
-    console.log('This function is works.')
+    console.log('Product Image array:', productImage)
+    console.log('Array of image:', image)
   }
 
   const renderPhotos = (source) => {
@@ -138,7 +142,7 @@ const EditProduct = () => {
               class="form-control col-lg-6"
               placeholder="Price"
               required
-              // id="exampleFirstName" 
+              // id="exampleFirstName"
               value={product.price}
               onChange={handleChange}
             />

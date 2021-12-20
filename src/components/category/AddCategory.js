@@ -6,7 +6,7 @@ import { addCategory } from '../../redux/actions/adminActions';
 const AddCategory = () => {
   const dispatch = useDispatch()
   const [title, setTitle] = useState('')
-  const [image, setImage] = useState()
+  const [image, setImage] = useState(null)
   const [description, setDescription] = useState('')
   const [subCategory, setSubCategory] = useState([{ title: '', description: '' }])
   const [preview, setPreview] = useState('')
@@ -19,9 +19,9 @@ const AddCategory = () => {
     formData.append('title', title);
     formData.append('description', description);
     formData.append('image', image);
-    for (let i = 0 ; i < subCategory.length ; i++) {
-      formData.append("subCategory", subCategory[i]);
-    }
+    // for (let i = 0 ; i < subCategory.length ; i++) {
+    //   formData.append("subCategory", subCategory[i]);
+    // }
     dispatch(addCategory(formData))
     for (var pair of formData.entries()) {
       console.log(pair[0] + ' - ' + pair[1]);
@@ -134,7 +134,7 @@ const AddCategory = () => {
                 name="title"
                 class="form-control"
                 placeholder="Title"
-                required
+                // required
                 className="form-control form-control-user"
                 // id="exampleFirstName" 
                 value={item.title}

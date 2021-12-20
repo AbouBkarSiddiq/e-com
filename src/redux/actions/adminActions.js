@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, DELETE_CATEGORY, DELETE_PRODUCT, UPDATE_CATEGORY, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_PRODUCT, SET_IS_FETCHING } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, DELETE_USER, DELETE_CATEGORY, DELETE_PRODUCT, UPDATE_CATEGORY, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_PRODUCT, SET_IS_FETCHING } from "../constants/index";
 // require('dotenv').config();
 
 const setIsFetching = (status) => {
@@ -84,22 +84,6 @@ export const getAllCategories = (userId, token) => async (dispatch) => {
         // dispatch(setIsFetchingTodos(false));
     }
 
-}
-
-export const getTodoDetail = (id) => async (dispatch) => {
-    console.log('Id for get todo detail:', id)
-    const res = await axios.get(`${process.env.REACT_APP_API_URL}todo/${id}`);
-    console.log('Get todo details action:', res)
-
-    if (res.status === 200) {
-        dispatch({
-            type: GET_TODO_DETAIL,
-            // isFetching: false,
-            payload: res.data.data,
-        });
-    } else {
-
-    }
 }
 
 
