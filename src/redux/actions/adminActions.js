@@ -29,14 +29,13 @@ export const getAllUsers = (userId, token) => async (dispatch) => {
                 payload: res.data.data,
             });
         } else {
-            // dispatch(setIsFetchingTodos(false));
+            dispatch(setIsFetching(false));
 
         }
 
     } catch (error) {
-        // dispatch(setIsFetchingTodos(false));
+        dispatch(setIsFetching(false));
     }
-
 }
 
 export const deleteUser = (id) => async (dispatch) => {
@@ -102,24 +101,32 @@ export const deleteCategory = (id) => async (dispatch) => {
     }
 }
 
-export const addCategory = (formData) => async (dispatch) => {
-    // for (var pair of formData.entries()) {
-    //     console.log('Log for form Data at actions:', pair[0] + ' - ' + pair[1]);
-    // }
-    const headers = {
-        'Content-Type': 'multipart/form-data'
-    }
-    // const res = await axios.post(`http://192.168.100.44:3002/category`, formData, { headers });
-    const res = await axios.post(`${process.env.REACT_APP_API_URL}category`, formData, { headers });
-    console.log('Response from api for newly created categroy:', res)
+export const addCategory = (formData, history) => async (dispatch) => {
+    // console.log('history object:', history);
+    try {
+        dispatch(setIsFetching(true));
+        for (var pair of formData.entries()) {
+            console.log('Log for form Data at actions:', pair[0] + ' - ' + pair[1]);
+        }
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        }
+        // const res = await axios.post(`http://192.168.100.44:3002/category`, formData, { headers });
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}category`, formData, { headers });
+        console.log('Response from api for newly created categroy:', res)
 
-    if (res.status === 200) {
-        dispatch({
-            type: ADD_CATEGORY,
-            // isFetching: false,
-            payload: res.data.data,
-        });
-    } else {
+        if (res.status === 200) {
+            dispatch({
+                type: ADD_CATEGORY,
+                isFetching: false,
+                payload: res.data.data,
+            });
+            history.push('/all-categories')
+        } else {
+            dispatch(setIsFetching(false));
+        }
+    } catch (error) {
+        dispatch(setIsFetching(false));
     }
 }
 
@@ -142,26 +149,30 @@ export const getCategoryDataToUpdate = (id) => async (dispatch) => {
     }
 }
 
-export const updateCategory = (id, formData) => async (dispatch) => {
-    try {// console.log('Own props of updateTodo:', ownProps);
-    const headers = {
-        'Content-Type': 'multipart/form-data'
+export const updateCategory = (id, formData, history) => async (dispatch) => {
+    console.log('History object:', history);
+    try {
+        dispatch(setIsFetching(true));
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        }
+        // const res = await axios.post(`http://192.168.100.44:3002/category/${id}`, formData, { headers });
+        const res = await axios.put(`${process.env.REACT_APP_API_URL}category/${id}`, formData, { headers });
+        // dispatch(setIsFetchingTodos(true));
+        if (res.status === 200) {
+            dispatch({
+                type: UPDATE_CATEGORY,
+                isFetching: false,
+                payload: res.data.data
+            });
+            history.push('/all-categories')
+            // ownProps.history.push('/home')
+        } else {
+            dispatch(setIsFetching(false));
+        }
     }
-    const res = await axios.put(`${process.env.REACT_APP_API_URL}category/${id}`, formData, { headers });
-    // dispatch(setIsFetchingTodos(true));
-    if (res.status === 200) {
-        dispatch({
-            type: UPDATE_CATEGORY,
-            // isFetching: false,
-            payload: res.data.data
-        });
-        // history.push('/categories')
-        // ownProps.history.push('/home')
-    } else {
-        dispatch(setIsFetching(false));
-    } }
     catch (error) {
-        // dispatch(setIsFetchingTodos(false));
+        dispatch(setIsFetching(false));
     }
 }
 
@@ -210,26 +221,34 @@ export const deleteProduct = (id) => async (dispatch) => {
     }
 }
 
-export const addProduct = (formData) => async (dispatch) => {
-    for (var pair of formData.entries()) {
-        console.log('Log for form Data at actions:', pair[0] + ' - ' + pair[1]);
-    }
+export const addProduct = (formData, history) => async (dispatch) => {
+    try {
+        dispatch(setIsFetching(true));
+        console.log('History object:', history)
+        for (var pair of formData.entries()) {
+            console.log('Log for form Data at actions:', pair[0] + ' - ' + pair[1]);
+        }
 
-    const headers = {
-        'Content-Type': 'multipart/form-data'
-    }
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        }
 
-    // const res = await axios.post('http://192.168.100.44:3002/product', formData, {headers});
-    const res = await axios.post(`${process.env.REACT_APP_API_URL}product`, formData, { headers });
-    console.log('Response from api for newly created product:', res)
+        // const res = await axios.post('http://192.168.100.44:3002/product', formData, {headers});
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}product`, formData, { headers });
 
-    if (res.status === 200) {
-        dispatch({
-            type: ADD_PRODUCT,
-            // isFetching: false,
-            payload: res.data.data,
-        });
-    } else {
+        if (res.status === 200) {
+            dispatch({
+                type: ADD_PRODUCT,
+                isFetching: false,
+                payload: res.data.data,
+            });
+            history.push('all-products')
+        } else {
+            dispatch(setIsFetching(false));
+        }
+    } catch (error) {
+        dispatch(setIsFetching(false));
+
     }
 }
 

@@ -1,0 +1,13 @@
+.add-more-btn {
+    float: right;
+    border:none;
+    color: #3699ff;
+    background-color: #e1f0ff;
+    border-color: transparent;
+    padding: 8px 20px;
+    /* margin-top: 40px; */
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}

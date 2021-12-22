@@ -1,12 +1,9 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-// import { useHistory } from 'react-router-dom';
-// import { useDispatch, useSelector } from "react-redux";
-require('dotenv').config();
+import { useHistory } from 'react-router-dom';
 
 const Register = () => {
-  // const dispatch = useDispatch()
-  // let history = useHistory()
+  let history = useHistory()
 
   const [userName, setUserName] = useState()
   const [email, setEmail] = useState()
@@ -18,6 +15,9 @@ const Register = () => {
     console.log('Data of user at Register...>>>>', data)
     axios.post(`${process.env.REACT_APP_API_URL}user/register`, data)
       .then((response) => {
+        if(response.status === 200) {
+          history.push('all-users')
+        }
         console.log('Data sent successfully.', response)
       }).catch (err => {console.log(err)})
       setUserName('')
@@ -31,7 +31,7 @@ const Register = () => {
       <hr />
       <form className="form-group col-lg-6 px-2" onSubmit={handleSubmit}>
         <div class="form-group">
-          {/* <label for="exampleFormControlInput1" style={{ textAlign: 'left' }}>User Name</label> */}
+        <label for="exampleFormControlInput1">User Name</label>
           <input
             type="text"
             name="userName"
@@ -45,7 +45,7 @@ const Register = () => {
           />
         </div>
         <div class="form-group">
-          {/* <label for="exampleFormControlInput1">Email address</label> */}
+        <label for="exampleFormControlInput1">Email</label>
           <input
             type="email"
             name="email"
@@ -56,15 +56,18 @@ const Register = () => {
           />
         </div>
         <div>
+        <label for="exampleFormControlInput1">Role</label>
           <select
             name="role"
             className="form-control"
             value={role}
+            required
             // style={{ width: '100%', padding: '12px', borderRadius: '50px', outline: 'none' }}
             onChange={e => setRole(e.target.value)}
           >
-            <option value="customer">Customer</option>
+            <option>Click to select a role</option>
             <option value="admin">Admin</option>
+            <option value="customer">Customer</option>
             <option value="superadmin">Super Admin</option>
           </select>
         </div>

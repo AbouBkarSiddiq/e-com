@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCategory } from '../../redux/actions/adminActions';
 import { getCategoryDataToUpdate } from '../../redux/actions/adminActions'
 import Loader from 'react-loader-spinner';
+import '../../assets/css/common.css'
 
 const EditCategory = () => {
   const history = useHistory()
   const { id } = useParams();
   const dispatch = useDispatch()
   const [category, setCategory] = useState({})
+  const [subCategory, setSubCategory] = useState([{ title: '', description: '' }])
   const [preview, setPreview] = useState('')
   const categoryData = useSelector((state) => state.adminReducer.category);
   const isFetching = useSelector((state) => state.adminReducer.isFetching)
@@ -43,7 +45,8 @@ const EditCategory = () => {
     formData.append('title', category.title);
     formData.append('description', category.description);
     formData.append('image', category.image);
-    dispatch(updateCategory(id, formData))
+    formData.append('subCategory', JSON.stringify(subCategory))
+    dispatch(updateCategory(id, formData, history))
     for (var pair of formData.entries()) {
       console.log(pair[0] + ' - ' + pair[1]);
     }
@@ -60,9 +63,32 @@ const EditCategory = () => {
   //         // setPreview(URL.createObjectURL(e.target.files[0]))
   //     }
   // }
+  const addSubCategoryValue = (key, event) => {
+    const subCategoryValue = [...subCategory]
+    subCategoryValue[key][event.target.name] = event.target.value
+    setSubCategory(subCategoryValue)
+  }
+
+  const addMore = () => {
+    const add = {
+      title: '',
+      description: '',
+      // image: ''
+    }
+    console.log('This function works')
+    setSubCategory([...subCategory, add])
+  }
+
+  const removeItem = index => {
+    const oldICategory = [...subCategory];
+    oldICategory.splice(index, 1);
+    setSubCategory(oldICategory)
+  }
 
   useEffect(() => {
     setCategory(categoryData)
+    console.log("Sub Category Data:", categoryData.subCategory)
+    setSubCategory(categoryData.subCategory)
   }, [categoryData])
 
   useEffect(() => {
@@ -79,28 +105,31 @@ const EditCategory = () => {
       </div>) : (<div className="px-4 border mx-4" style={{ backgroundColor: 'white' }}>
         <label className="pl-2 mt-4">Edit Category</label>
         <hr />
-        <form className="form-group col-lg-6 px-2" onSubmit={handleSubmit}>
+        <form className="form-group px-2" onSubmit={handleSubmit}>
           <div class="form-group">
-            {/* <label for="exampleFormControlInput1" style={{ textAlign: 'left' }}>User Name</label> */}
+            <label for="exampleFormControlInput1" style={{ textAlign: 'left' }}>Title</label>
             <input
               type="text"
               name="title"
               class="form-control"
               placeholder="Title"
               required
-              className="form-control form-control-user"
+              className="form-control form-control-user col-lg-6"
               // id="exampleFirstName" 
               value={category.title}
               onChange={handleChange}
             />
           </div>
           <div class="form-group">
-            {/* <label for="exampleFormControlInput1">Email address</label> */}
+            <label for="exampleFormControlInput1" style={{ textAlign: 'left' }}>Description</label>
             <input
               type="text"
               name="description"
               class="form-control"
               placeholder="Description"
+              required
+              className="form-control form-control-user col-lg-6"
+              // id="exampleFirstName" 
               value={category.description}
               onChange={handleChange}
             />
@@ -121,6 +150,41 @@ const EditCategory = () => {
               <img style={{ width: '300px', height: '300px' }} src={category.image} alt="todo" />
             </div> : null
           }
+          {subCategory ? subCategory.map((item, key) => <div className="" style={{ backgroundColor: 'white', padding: '0px' }}>
+            <div className="mt-1"><div>Sub Category {key + 1}
+            <span className="my-1 add-more-btn" onClick={() => removeItem(key)}>Remove -</span>
+            </div>
+            <div className="col-lg-12 col-md-12 d-flex flex-column flex-lg-row full-width justify-content-between mt-1 border py-2">
+              <div className="col-lg-6">
+                <label className="">Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Title"
+                  // required
+                  className="form-control"
+                  // id="exampleFirstName"
+                  value={item.title}
+                  onChange={(e) => addSubCategoryValue(key, e)}
+                />
+              </div>
+              <div className="col-lg-6">
+                <label>Description</label>
+                {/* <label for="exampleFormControlInput1">Email address</label> */}
+                <input
+                  type="text"
+                  name="description"
+                  className="form-control"
+                  placeholder="Description"
+                  value={item.description}
+                  onChange={(e) => addSubCategoryValue(key, e)}
+                />
+              </div>
+            </div>
+            {/* <hr /> */}
+            </div>
+          </div>) : null}
+          <span onClick={addMore} className="add-more-btn" style={{ marginTop: '12px', marginLeft: '12px' }}>Add More +</span>
           <button type="submit" className="btn btn-primary" style={{ marginTop: '12px' }}>
             Update Category
           </button>

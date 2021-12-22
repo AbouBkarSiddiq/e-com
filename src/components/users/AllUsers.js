@@ -11,17 +11,18 @@ const AllUsers = () => {
   const dispatch = useDispatch()
   const [deleteModal, setDeleteModal] = useState(false)
   const [userId, setUserId] = useState()
-  // const [users, setUsers] = useState()
+  const [allUsers, setAllUsers] = useState()
   let users = useSelector((state) => state.adminReducer.users);
   const isFetching = useSelector((state) => state.adminReducer.isFetching)
 
   useEffect(() => {
-    if(!users.length && !isFetching) {
+    setAllUsers(users)
+  }, [users])
+
+  useEffect(() => {
       dispatch(getAllUsers());
       console.log('Rendering useEffect...')
-    }
-    // console.log('Data of fetched users:', users)
-  }, [users])
+  }, [])
 
   const handleDelete = () => {
     dispatch(deleteUser(userId))
