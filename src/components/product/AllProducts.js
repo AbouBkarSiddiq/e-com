@@ -14,18 +14,19 @@ const AllProducts = () => {
   let products = useSelector((state) => state.adminReducer.products);
   const isFetching = useSelector((state) => state.adminReducer.isFetching)
   // console.log('Is fetching:', isFetching)
-
   console.log('Products response from backend>>>>', products)
 
+  // useEffect(() => {
+  //   if (!products.length) {
+  //     dispatch(getAllProducts());
+  //     console.log('Rendering useEffect...')
+  //     console.log('Data of fetched categories:', products)
+  //   }
+  // }, [products])
+
   useEffect(() => {
-    if (!products.length) {
       dispatch(getAllProducts());
-      console.log('Rendering useEffect...')
-      console.log('Data of fetched categories:', products)
-
-    }
-  }, [products])
-
+  }, [])
 
   const handleEdit = () => {
     history.push('product')
@@ -36,8 +37,9 @@ const AllProducts = () => {
 
   const handleDelete = () => {
     // setUserId(user._id)
-    dispatch(deleteProduct(productId))
+    dispatch(deleteProduct(productId, history))
     setDeleteModal(false)
+    // history.push('/all-products')
   }
 
   return (
@@ -61,7 +63,7 @@ const AllProducts = () => {
                 </tr>
               </thead>
               {
-                products.map((product) => (
+                products && products.map((product) => (
                   <tbody>
                     <tr scope="row">
                       <td>{product.title}</td>

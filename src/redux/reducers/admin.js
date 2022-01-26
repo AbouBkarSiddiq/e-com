@@ -11,6 +11,7 @@ const initialState = {
 };
 
 const adminReducer = (state = initialState, action) => {
+  // console.log(action)
   switch (action.type) {
     case SET_IS_FETCHING:
       return {
@@ -73,7 +74,7 @@ const adminReducer = (state = initialState, action) => {
       };
       case ADD_PRODUCT:
         return {
-        ...state,
+        // ...state,
         isFetching: false,
         product: action.payload,
       };

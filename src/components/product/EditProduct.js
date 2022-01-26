@@ -16,6 +16,7 @@ const EditProduct = () => {
   // const [image, setImage] = useState([{}])
   const [selectedImages, setSelectedImages] = useState([])
   const productData = useSelector((state) => state.adminReducer.product);
+  console.log("Product data edited:", productData)
   const isFetching = useSelector((state) => state.adminReducer.isFetching);
 
   const handleChange = ({ target }) => {
@@ -38,11 +39,11 @@ const EditProduct = () => {
       // files.push(files); //My blob
       // let foo = URL.createObjectURL(new Blob(files, { type: "image/png, image/jpeg, image/jpg" }));
       // setImage(foo)
-      
+
       // for (let i = 0; i < files.length; i++) {
       //   setSelectedImages([URL.createObjectURL(files[i])])
       // }
-      
+
 
       // const fileArray = Array.from(files).map(file => URL.createObjectURL(file))
       // setSelectedImages(fileArray)
@@ -61,6 +62,8 @@ const EditProduct = () => {
     const formData = new FormData();
     formData.append('title', product.title);
     formData.append('price', product.price)
+    formData.append('size', product.size)
+    formData.append('color', product.color)
     formData.append('description', product.description);
     for (let i = 0; i < allImages.length; i++) {
       formData.append("image", allImages[i]);
@@ -74,7 +77,7 @@ const EditProduct = () => {
 
   useEffect(() => {
     setProduct(productData)
-    console.log('Product object consoled:', productData.image)
+    // console.log('Product object consoled:', productData.image)
     setProductImage(productData.image)
   }, [productData])
 
@@ -89,6 +92,7 @@ const EditProduct = () => {
     const oldImages = [...selectedImages];
     oldImages.splice(index, 1);
     setSelectedImages(oldImages)
+    setAllImages([...productImage, ...oldImages])
   }
 
   const handleDeleteImage = (index) => {
@@ -169,6 +173,44 @@ const EditProduct = () => {
               value={product.description}
               onChange={handleChange}
             />
+          </div>
+          <div class="form-group">
+            <label>Sizes:</label>
+            <select
+              name="size"
+              value={product.size}
+              // onChange={(e) => setColor(e.target.value)}
+              onChange={handleChange}
+
+              // onChange={(e) => setSize(e.target.value)}
+
+            >
+              <option >Choose a size</option>
+              <option name="s" value="s">Small</option>
+              <option name="m" value="m">Medium</option>
+              <option name="s" value="l">Large</option>
+              <option name="s" value="xl">X-Large</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Colors</label>
+            <select
+              name="color"
+              value={product.color}
+              onChange={handleChange}
+
+              // onChange={(e) => setColor(e.target.value)}
+
+            >
+              <option >Choose a size</option>
+              <option value="Blue">Blue</option>
+              <option value="Sky-Blue">Sky-Blue</option>
+              <option value="Off-white">Off-White</option>
+              <option value="Pink">Pink</option>
+              <option value="Red">Red</option>
+              <option value="Black">Black</option>
+            </select>
           </div>
           {selectedImages?.length ? selectedImages.map((el, index) => <div className="form-group small-section upload-file" style={{ border: '1px solid', widht: '100%', height: '20%', background: '', borderRadius: '2px', outline: 'none', borderColor: 'white', }} >
             <label for="exampleFormControlInput1">Image</label>

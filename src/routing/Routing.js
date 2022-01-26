@@ -28,7 +28,7 @@ const Routing = () => {
         <Router>
             <Switch>
                 <Route exact path="/" component={Login} />
-                <Layout >
+                <Layout>
                 <PrivateRoute path="/admin" component={Admin} />
                 <PrivateRoute path="/all-users" component={AllUsers} />
                 <PrivateRoute path="/add-user" component={Register} />
@@ -39,12 +39,6 @@ const Routing = () => {
                 <PrivateRoute path="/all-categories" component={AllCategories} />
                 <PrivateRoute path="/all-products" component={AllProducts} />
                 <PrivateRoute path="/product/:id" component={EditProduct} />
-
-                {/* 
-                <Route path="/create" component={Create} />
-                <Route path="/todo/:id" component={TodoDetails} />
-                <Route path="/edit-todo/:id" component={EditTodo} />
-                */}
                 </Layout>
             </Switch>
         </Router>
